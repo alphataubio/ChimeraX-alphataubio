@@ -1,0 +1,42 @@
+<BundleInfo name="LAMMPS" version="1.0"
+	    package="chimerax.lammps"
+  	    minSessionVersion="1" maxSessionVersion="1">
+
+  <Author>Mitch Murphy</Author>
+  <Email>alphataubio@gmail.com</Email>
+  <URL>https://lammps.org/</URL>
+
+  <Synopsis>Molecular dynamics support</Synopsis>
+  <Description>This bundle provides parsers for LAMMPS data and dump file formats.</Description>
+
+  <Categories>
+    <Category name="Molecular Dynamics"/>
+  </Categories>
+
+  <Dependencies>
+    <Dependency name="ChimeraX-Core" version="~=1.0"/>
+    <Dependency name="ChimeraX-Atomic" version="~=1.22"/>
+    <Dependency name="ChimeraX-DataFormats" version="~=1.0"/>
+    <Dependency name="ChimeraX-OpenCommand" version="~=1.0"/>
+  </Dependencies>
+
+  <Providers manager="data formats">
+    <Provider name="LAMMPS coordinates" category="Molecular structure"
+		nicknames="data" suffixes=".data" default_for=".data" encoding="utf-8"
+		synopsis="LAMMPS data format" reference_url="https://docs.lammps.org/write_data.html" />
+    <Provider name="LAMMPS trajectory" category="Molecular trajectory"
+		nicknames="dump" suffixes=".dump" default_for=".dump" encoding="utf-8"
+		synopsis="LAMMPS dump format" reference_url="https://docs.lammps.org/dump.html" />
+  </Providers>
+
+  <Providers manager="open command">
+    <Provider name="data" want_path="true" />
+    <Provider name="dump" want_path="true" />
+  </Providers>
+
+  <Classifiers>
+    <PythonClassifier>Development Status :: 4 - Beta</PythonClassifier>
+    <PythonClassifier>License :: OSI Approved :: GNU General Public License v2 (GPLv2)</PythonClassifier>
+  </Classifiers>
+
+</BundleInfo>
