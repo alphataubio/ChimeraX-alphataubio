@@ -21,18 +21,37 @@
     <Dependency name="ChimeraX-RotamerLibMgr" version="~=4.0"/>
     <Dependency name="ChimeraX-SwapRes" version="~=2.1"/>
     <Dependency name="ChimeraX-UI" version="~=1.10"/>
+    <Dependency name="ChimeraX-DataFormats" version="~=1.0"/>
+    <Dependency name="ChimeraX-OpenCommand" version="~=1.0"/>
     <Dependency name="ChimeraX-SaveCommand" version="~=1.0"/>
   </Dependencies>
 
+
+  <!-- Define data formats for SPH and DMS -->
   <Providers manager="data formats">
-    <Provider name="DMS" category="Generic 3D objects"
-      reference_url="https://dock.compbio.ucsf.edu/DOCK_6/dock6_manual.htm"
-      suffixes=".dms" />
+    <Provider name="SPH" synopsis="DOCK 6 Sphere File" nicknames="sph" 
+              category="Docking" suffixes=".sph" default_for=".sph"
+              reference_url="https://ringo.ams.stonybrook.edu/index.php/2024_DOCK_tutorial_1_with_PDBID_2ITO" />
+    <Provider name="DMS" synopsis="Docking Molecular Surface File" nicknames="dms"
+              category="Docking" suffixes=".dms" default_for=".dms"
+              reference_url="https://dock.compbio.ucsf.edu/DOCK_6/dock6_manual.htm#DMS" />
   </Providers>
 
+  <!-- Provide save command for SPH and DMS -->
   <Providers manager="save command">
-    <Provider name="DMS" />
+    <Provider name="SPH"/>
+    <Provider name="DMS"/>
   </Providers>
+
+  <!-- Provide open command for SPH and DMS -->
+  <Providers manager="open command">
+    <Provider name="SPH" want_path="true"/>
+  </Providers>
+
+
+
+
+
 
   <Classifiers>
     <PythonClassifier>Development Status :: 3 - Alpha</PythonClassifier>

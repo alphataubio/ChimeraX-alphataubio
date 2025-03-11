@@ -92,6 +92,9 @@ def add_standard_charges(session, residues=None, *, status=None, standardize_res
     uncharged_residues = set()
     modified_atoms = []
     warn_UNK = False
+
+    session.logger.info("ok 1")
+
     for r in residues:
         if not hasattr(r, "amber_name"):
             uncharged_residues.add(r)
@@ -136,6 +139,8 @@ def add_standard_charges(session, residues=None, *, status=None, standardize_res
     if warn_UNK:
         session.logger.warning("There are UNK residues in the structure.  Charges in those regions will"
             " be inaccurate.")
+
+    session.logger.info("ok 2")
 
     # merge connected non-standard residues into a "mega" residue.
     # also any standard residues directly connected
@@ -182,6 +187,9 @@ def add_standard_charges(session, residues=None, *, status=None, standardize_res
                     continue
     # split isolated atoms (e.g. metals) into separate "residues"
     urt_list = list(uncharged_res_types.items())
+
+    session.logger.info("ok 3")
+
     for res_type, residues in urt_list:
         bond_residues = residues
         br_type = res_type
@@ -224,24 +232,42 @@ def add_standard_charges(session, residues=None, *, status=None, standardize_res
 
     # despite same residue type, residues may still differ -- particularly terminal vs. non-terminal...
     # can't modify a dictionary while you're iterating over it, so...
+
+    session.logger.info("ok 4")
+
     for res_type, residues in list(uncharged_res_types.items()):
+
+        session.logger.info(f"ok 4b res_type {res_type} residues {residues}")
+
         if len(residues) < 2:
             continue
         varieties = {}
         for r in residues:
             key = tuple(sorted([a.name for a in r.atoms]))
             varieties.setdefault(key, []).append(r)
+
+        session.logger.info("ok 4c")
+
         if len(varieties) == 1:
             continue
         # in order to give the varieties distinguishing names, find atoms in common
         keys = list(varieties.keys())
         common = set(keys[0])
+
+        session.logger.info("ok 4d")
+
         for k in keys[1:]:
             common = common.intersection(set(k))
         uncommon = set()
+
+        session.logger.info("ok 4e")
+
         for k in keys:
             uncommon = uncommon.union(set(k) - common)
         del uncharged_res_types[res_type]
+
+        session.logger.info("ok 4f")
+
         for k, residues in varieties.items():
             names = set(k)
             more = names - common
@@ -252,6 +278,9 @@ def add_standard_charges(session, residues=None, *, status=None, standardize_res
             if less:
                 new_key += " (wo/%s" % ",".join(list(less))
             uncharged_res_types[new_key] = residues
+
+        session.logger.info("ok 4g")
+
     if status:
         status("Standard charges added")
     return uncharged_res_types
@@ -289,6 +318,9 @@ def add_nonstandard_res_charges(session, residues, net_charge, method="am1-bcc",
 
        Hydrogens need to be present.
     """
+
+    session.logger.info("ok 5")
+
     r0 = residues[0]
     session.logger.info("Assigning partial charges to residue %s (net charge %+d) with %s method"
         % (r0.name, net_charge, method))
@@ -304,6 +336,8 @@ def add_nonstandard_res_charges(session, residues, net_charge, method="am1-bcc",
             else:
                 session.logger.info("Could not determine GAFF type for atom %s" % a)
         return
+
+    session.logger.info("ok 6")
 
     # detect tautomers by checking bonds
     varieties = {}
@@ -326,6 +360,9 @@ def add_nonstandard_res_charges(session, residues, net_charge, method="am1-bcc",
         varieties.setdefault(tuple(bonds), []).append(r)
     if len(varieties) > 1:
         session.logger.info("%d tautomers of %s; charging separately" % (len(varieties), r0.name))
+
+    session.logger.info("ok 7")
+
     for tautomer_residues in varieties.values():
         nonstd_charge(session, tautomer_residues, net_charge, method, status=status)
 

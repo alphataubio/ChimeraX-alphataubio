@@ -22,17 +22,20 @@
 # copies, of the software or any revisions or derivations thereof.
 # === UCSF ChimeraX Copyright ===
 
-#--- public API ---
+# --- Public API ---
 from .cmd import dock_prep_caller
 
-# all modules involved in the DockPrep pipeline provide these variables/functions
+# All modules involved in the DockPrep pipeline provide these variables/functions
 from .cmd import dock_prep_arg_info
 from .prep import prep as run_for_dock_prep, handle_memorization, MEMORIZE_USE, MEMORIZE_SAVE, MEMORIZE_NONE
 
-#--- toolshed/session-init funcs ---
-
+# --- Toolshed / Session-Init Functions ---
 from chimerax.core.toolshed import BundleAPI
+from chimerax.save_command import SaverInfo
+from chimerax.open_command import OpenerInfo
+from chimerax.core.commands import ModelsArg
 from .dms import save_dms
+from .sph import save_sph, open_sph
 
 class DockPrepAPI(BundleAPI):
 
@@ -47,17 +50,39 @@ class DockPrepAPI(BundleAPI):
         DockPrepTool(session)
 
     @staticmethod
-    def run_provider(session, name, mgr, **kw):
-        from chimerax.save_command import SaverInfo
-        class DmsInfo(SaverInfo):
-            def save(self, session, path, *, models=None):
-                save_dms(session, path, models)
+    def run_provider(session, name, mgr):
+        if mgr == session.open_command:
+            class SphOpener(OpenerInfo):
+                def open(self, session, data, file_name, **kw):
+                    return open_sph(session, file_name, **kw)
+            return SphOpener()
 
-            @property
-            def save_args(self):
-                from chimerax.core.commands import ModelsArg
-                return { 'models': ModelsArg }
+        if mgr == session.save_command:
+            class DmsSaver(SaverInfo):
+                def save(self, session, path, *, models=None):
+                    save_dms(session, path, models)
 
-        return DmsInfo()
+                @property
+                def save_args(self):
+                    return {'models': ModelsArg}
+
+            class SphSaver(SaverInfo):
+                def save(self, session, path, *, models=None):
+                    save_sph(session, path, models)
+
+                @property
+                def save_args(self):
+                    return {'models': ModelsArg}
+
+            if name == "DMS":
+                return DmsSaver()
+            elif name == "SPH":
+                return SphSaver()
+            else:
+                raise ValueError(f"Unknown save format: {name}")
+
+        raise ValueError(f"Unknown provider manager: {mgr}")
 
 bundle_api = DockPrepAPI()
+
+
