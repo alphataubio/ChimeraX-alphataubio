@@ -9,12 +9,10 @@ jobs:
       fail-fast: false
       matrix:
         include: 
-#          - branch: release/v1.10
-#            release_type: candidate
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          - branch: python3.13
-            release_type: techpreview
     uses: ./.github/workflows/rocky8_build.yml
     with:
       branch: ${{ matrix.branch }}
@@ -27,12 +25,10 @@ jobs:
       fail-fast: false
       matrix:
         include: 
-#          - branch: release/v1.10
-#            release_type: candidate
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          - branch: python3.13
-            release_type: techpreview
     uses: ./.github/workflows/rocky9_build.yml
     with:
       branch: ${{ matrix.branch }}
@@ -45,12 +41,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          #          - branch: release/v1.10
-          #            release_type: candidate
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          - branch: python3.13
-            release_type: techpreview
     uses: ./.github/workflows/ubuntu_build.yml
     with:
       branch: ${{ matrix.branch }}
@@ -63,10 +57,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          #- branch: python3.13
-          #  release_type: techpreview
     uses: ./.github/workflows/flatpak_build.yml
     with:
       branch: ${{ matrix.branch }}
@@ -78,12 +72,10 @@ jobs:
       fail-fast: false
       matrix:
         include: 
-#          - branch: release/v1.10
-#            release_type: candidate
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          #- branch: python3.13
-          #  release_type: techpreview
     uses: ./.github/workflows/flatpak_arm_build.yml
     with:
       branch: ${{ matrix.branch }}
@@ -95,12 +87,10 @@ jobs:
       fail-fast: false
       matrix:
         include: 
-#          - branch: release/v1.10
-#            release_type: candidate
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          - branch: python3.13
-            release_type: techpreview
     uses: ./.github/workflows/mac_arm_build.yml
     with:
       branch: ${{ matrix.branch }}
@@ -112,12 +102,10 @@ jobs:
       fail-fast: false
       matrix:
         include: 
-#          - branch: release/v1.10
-#            release_type: candidate
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          - branch: python3.13
-            release_type: techpreview
     uses: ./.github/workflows/mac_intel_build.yml
     with:
       branch: ${{ matrix.branch }}
@@ -130,12 +118,10 @@ jobs:
       fail-fast: false
       matrix:
         include: 
-#          - branch: release/v1.10
-#            release_type: candidate
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          #- branch: python3.13
-          #  release_type: techpreview
     uses: ./.github/workflows/mac_universal_build.yml
     with:
       branch: ${{ matrix.branch }}
@@ -147,12 +133,10 @@ jobs:
       fail-fast: false
       matrix:
         include: 
-#          - branch: release/v1.10
-#            release_type: candidate
+          - branch: release/v1.10
+            release_type: candidate
           - branch: develop
             release_type: daily
-          - branch: python3.13
-            release_type: techpreview
     uses: ./.github/workflows/windows_build.yml
     with:
       branch: ${{ matrix.branch }}
